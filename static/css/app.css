@@ -1,0 +1,15 @@
+.mont {
+	font-family:'Roboto';
+	font-weight:100;
+}
+
+.logo {
+	font-size:80%;
+	position:relative;
+	top:4px;
+	display: inline !important;
+}
+
+.side-name {
+	color:black;
+}
