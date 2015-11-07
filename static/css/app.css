@@ -13,3 +13,45 @@
 .side-name {
 	color:black;
 }
+
+.side-nav a {
+	padding:0;
+	height:48px;
+	line-height:48px;
+	border-bottom:1px solid #ddd;
+}
+.side-nav a:hover {
+	background:#dcedc8;
+}
+.side-nav .material-icons {
+	font-size:20px;
+	display:inline;
+	position:relative;
+	top:4px;
+	padding-right:5px;
+}
+
+img.profile {
+	height:36px;
+	border-radius:18px;
+	position:relative;
+	top:12px;
+	padding-right:5px;
+}
+
+.collection-item {
+	padding-left:15px !important;
+}
+.collection-amount {
+	float:right;
+	color:#888;
+}
+
+.advisor {
+	float:left;
+	margin:1em 0;
+}
+.go-to-chat {
+	margin:1em 0;
+	float:right;
+}
