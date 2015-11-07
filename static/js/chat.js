@@ -1,4 +1,4 @@
-      var socket = io.connect('http://localhost:8000');
+      var socket = io.connect('http://pure-cliffs-5296.herokuapp.com');
    
       socket.on('recMsg', function(data){
         console.log('recMsg: ',data)
