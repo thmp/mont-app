@@ -78,6 +78,16 @@ img.profile {
 	margin-bottom:120px;
 }
 .messages .own {
-	background:#eeffee;
+	background:#cfd8dc;
 	float:right;
+}
+
+/* label focus color */
+.input-field input[type=text]:focus + label {
+ color: #607d8b;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+ border-bottom: 1px solid #607d8b;
+ box-shadow: 0 1px 0 0 #000;
 }
