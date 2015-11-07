@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.io</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.min.js"></script>
+  </head>
+  <body>
+    <script>    
+      var socket = io.connect('http://localhost:8000');
+
+//      function adminJoin(){
+//        socket.emit('adminJoin')
+//      }
+//      
+//      function customerJoin(){
+//        socket.emit('customerJoin')
+//      }
+//      
+      socket.on('recMsg', function(data){
+        console.log('recMsg: ',data)
+        // data.message [string]
+//        addChatMessage(data);
+      }) 
+      
+      function sendMsg(data){
+        console.log('sending msg: ' + data);
+        socket.emit('sendMsg', data)
+      }
+      
+      
+      
+    </script>
+  </body>
+  
+</html>
