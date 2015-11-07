@@ -73,6 +73,9 @@ img.profile {
 	margin-bottom:.5em;
 	transition-property:height;
 	transition-duration:1s;
+	height: auto;
+	line-height: 22px;
+	margin-right: 100px;
 }
 .messages .chip:last-child {
 	margin-bottom:120px;
@@ -80,6 +83,8 @@ img.profile {
 .messages .own {
 	background:#cfd8dc;
 	float:right;
+	margin-right: 0;
+	margin-left: 100px;
 }
 
 /* label focus color */
