@@ -1,21 +1,38 @@
+# -*- coding=utf8 -*-
+
 from flask import Flask, request, send_from_directory
 from figo import FigoConnection, FigoSession
 import os
-import webbrowser
+import webbrowser, json
+import requests
 
+KEYDICT = {'KeyId': '782f60c6-f1a3-4670-84fe-5b3c749ceddc'}
 
 # set the project root directory as the static folder, you can set others.
 app = Flask(__name__, static_url_path='')
 
+my_securities = [
+  {
+    'name': 'iShares Core MSCI World',
+    'amount': u'€ 3,144.01'
+  }
+]
+
 @app.route('/account')
 def account():
-  session = FigoSession("ASHWLIkouP2O6_bgA2wWReRhletgWKHYjLqDaqb0LFfamim9RjexTo22ujRIP_cjLiRiSyQXyt2kM1eXU2XLFZQ0Hro15HikJQT_eNeT_9XQ")
-  print session
-  securities = session.securities
-  #for security in session.get_securities():
-  #  print security
-  return 'alkjalkaj';
+  r = requests.get('https://ucg-apimanager.axwaycloud.net:8065/accounts/v1?userId=aa.bruno.60', headers=KEYDICT)
+  account_ids = []
+  accounts = r.json()['accounts']
+  account_info = []
+  for account in accounts:
+    account_ids.append(account['account']['id'])
+    r = requests.get('https://ucg-apimanager.axwaycloud.net:8065/accounts/v1/'+account['account']['id']+'?userId=aa.bruno.60', headers=KEYDICT)
+    account_info.append({'name': r.json()['account']['name'], 'balance': r.json()['account']['balance']})
+  return json.dumps(account_info)
 
+@app.route('/securities')
+def securities():
+  return json.dumps(my_securities)
 
 @app.route('/<path:path>')
 def send_js(path):

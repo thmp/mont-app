@@ -1,15 +1,15 @@
-      var socket = io.connect('http://pure-cliffs-5296.herokuapp.com');
-   
-      socket.on('recMsg', function(data){
-        console.log('recMsg: ',data)
-        $('.messages').append('<div class="chip">'+data.message+'</div>');
-	        window.scrollTo(0,document.body.scrollHeight);
-      }) 
-      
-      function sendMsg(data){
-        console.log('sending msg: ' + data);
-        socket.emit('sendMsg', data)
-      }
+var socket = io.connect('http://pure-cliffs-5296.herokuapp.com');
+
+socket.on('recMsg', function(data){
+console.log('recMsg: ',data)
+$('.messages').append('<div class="chip">'+data.message+'</div>');
+    window.scrollTo(0,document.body.scrollHeight);
+}) 
+
+function sendMsg(data){
+console.log('sending msg: ' + data);
+socket.emit('sendMsg', data)
+}
 
 $(document).ready(function() {
 	$('#message').keyup(function(e){
