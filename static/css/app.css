@@ -55,3 +55,29 @@ img.profile {
 	margin:1em 0;
 	float:right;
 }
+
+.message-input {
+	position:fixed;
+	bottom:0px;
+	left:1em;
+	right:1em;
+}
+.messages {
+	padding-top:1em;
+	padding-bottom:3em;
+}
+.messages .chip {
+	float:left;
+	clear:both;
+	width:auto;
+	margin-bottom:.5em;
+	transition-property:height;
+	transition-duration:1s;
+}
+.messages .chip:last-child {
+	margin-bottom:120px;
+}
+.messages .own {
+	background:#eeffee;
+	float:right;
+}
