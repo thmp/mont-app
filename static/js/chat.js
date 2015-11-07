@@ -1,4 +1,4 @@
-var socket = io.connect('http://pure-cliffs-5296.herokuapp.com');
+var socket = io.connect('http://yo.mybluemix.net');
 
 socket.on('recMsg', function(data){
 console.log('recMsg: ',data)
