@@ -73,7 +73,7 @@ def search(query):
       stocks.append(stock['symbol'])
 
     if len(stocks) == 0:
-      return ''
+      return json.dumps([])
 
     # get quotes for stocks
     symbols = ",".join(stocks)
