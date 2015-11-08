@@ -6,6 +6,8 @@ from functools import wraps
 import os
 import webbrowser, json
 import requests
+from watson_developer_cloud import ConceptInsightsV2 as ConceptInsights
+from requests.auth import HTTPBasicAuth
 
 def add_response_headers(headers={}):
     """This decorator adds the headers passed in to the response"""
@@ -53,6 +55,24 @@ def transactions():
   for transaction in transactions:
     transaction_info.append({'description': transaction['description'], 'amount': transaction['amount']})
   return json.dumps(transaction_info[:10])
+
+@app.route('/more/<query>')
+def more(query):
+  ##r = requests.get('http://gateway-a.watsonplatform.net/calls/text/TextGetRankedKeywords?outputMode=json&apikey='+ALCHEMY+'&text='+query)
+
+  #keywords = []
+  #for word in r.json()['keywords']:
+  #  keywords.append(word['text'])
+
+  r = requests.post('https://concept-insights-demo.mybluemix.net/api/extractConceptMentions', data={'text': query})
+  annotations = []
+  for annotation in r.json()['annotations']:
+    annotations.append({'title': annotation['concept']['label']})
+
+    r1 = requests.get('https://gateway.watsonplatform.net/concept-insights/api/v2/graphs/wikipedia/en-20120601/related_concepts?concept=\["/graphs/wikipedia/en-20120601/concepts/'+annotation['concept']['label']+'"\]', auth=HTTPBasicAuth('c4f1a04e-1a41-4b96-b60b-a79f525200ad', 'DNnG37PURhHk'))
+    print r1.status_code
+
+  return json.dumps(annotations)
 
 @app.route('/stock/<query>')
 @add_response_headers({'Access-Control-Allow-Origin': '*'})
