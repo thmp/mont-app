@@ -96,3 +96,8 @@ img.profile {
  border-bottom: 1px solid #607d8b;
  box-shadow: 0 1px 0 0 #000;
 }
+
+.amount {
+	font-size:120%;
+	padding-left:1em;
+}
