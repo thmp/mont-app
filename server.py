@@ -66,11 +66,15 @@ def more(query):
 
   r = requests.post('https://concept-insights-demo.mybluemix.net/api/extractConceptMentions', data={'text': query})
   annotations = []
+  print r.text
   for annotation in r.json()['annotations']:
-    annotations.append({'title': annotation['concept']['label']})
 
-    r1 = requests.get('https://gateway.watsonplatform.net/concept-insights/api/v2/graphs/wikipedia/en-20120601/related_concepts?concept=\["/graphs/wikipedia/en-20120601/concepts/'+annotation['concept']['label']+'"\]', auth=HTTPBasicAuth('c4f1a04e-1a41-4b96-b60b-a79f525200ad', 'DNnG37PURhHk'))
-    print r1.status_code
+    r1 = requests.get('https://gateway.watsonplatform.net/concept-insights/api/v2/graphs/wikipedia/en-20120601/related_concepts?concepts=["/graphs/wikipedia/en-20120601/concepts/'+annotation['concept']['label']+'"]&level=1', auth=HTTPBasicAuth('c4f1a04e-1a41-4b96-b60b-a79f525200ad', 'DNnG37PURhHk'))
+    related = []
+    for concept in r1.json()['concepts']:
+      related.append({'title': concept['concept']['label']})
+
+    annotations.append({'title': annotation['concept']['label'], 'related': related})
 
   return json.dumps(annotations)
 
