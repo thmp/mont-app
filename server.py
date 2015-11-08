@@ -7,6 +7,7 @@ import webbrowser, json
 import requests
 
 KEYDICT = {'KeyId': '782f60c6-f1a3-4670-84fe-5b3c749ceddc'}
+ALCHEMY = '5a8e248d968514b30bad5d7fc814937cc9663257'
 
 # set the project root directory as the static folder, you can set others.
 app = Flask(__name__, static_url_path='')
@@ -41,26 +42,35 @@ def transactions():
 
 @app.route('/stock/<query>')
 def search(query):
-  r = requests.get('https://s.yimg.com/aq/autoc?query='+query+'&region=US&lang=en-US&callback=callback')
-  resp = r.text[9:-2]
-  resp_json = json.loads(resp)
+  r = requests.get('http://access.alchemyapi.com/calls/text/TextGetRankedNamedEntities?outputMode=json&apikey='+ALCHEMY+'&text='+query)
 
-  stocks = []
-  for stock in resp_json['ResultSet']['Result']:
-    stocks.append(stock['symbol'])
+  if len(r.json()['entities']) >= 0:
+    query = ''
+    for entity in r.json()['entities']:
+      if entity['type'] == 'Company':
+        query = entity['text']
+    r = requests.get('https://s.yimg.com/aq/autoc?query='+query+'&region=US&lang=en-US&callback=callback')
+    resp = r.text[9:-2]
+    resp_json = json.loads(resp)
 
-  # get quotes for stocks
-  symbols = ",".join(stocks)
-  r = requests.get('http://finance.yahoo.com/webservice/v1/symbols/'+symbols+'/quote?format=json&view=detail')
-  quotes = r.json()['list']['resources']
-  quotes_list = []
-  for quote in quotes:
-    quotes_list.append({
-      'name': quote['resource']['fields']['name'],
-      'price': quote['resource']['fields']['price'],
-      'symbol': quote['resource']['fields']['symbol']
-      })
-  return json.dumps(quotes_list)
+    stocks = []
+    for stock in resp_json['ResultSet']['Result']:
+      stocks.append(stock['symbol'])
+
+    # get quotes for stocks
+    symbols = ",".join(stocks)
+    r = requests.get('http://finance.yahoo.com/webservice/v1/symbols/'+symbols+'/quote?format=json&view=detail')
+    quotes = r.json()['list']['resources']
+    quotes_list = []
+    for quote in quotes:
+      quotes_list.append({
+        'name': quote['resource']['fields']['name'],
+        'price': quote['resource']['fields']['price'],
+        'symbol': quote['resource']['fields']['symbol']
+        })
+    return json.dumps(quotes_list)
+  else:
+    return json.dumps([])
 
 @app.route('/securities')
 def securities():
