@@ -1,10 +1,24 @@
 # -*- coding=utf8 -*-
 
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, send_from_directory, make_response
 from figo import FigoConnection, FigoSession
+from functools import wraps
 import os
 import webbrowser, json
 import requests
+
+def add_response_headers(headers={}):
+    """This decorator adds the headers passed in to the response"""
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            resp = make_response(f(*args, **kwargs))
+            h = resp.headers
+            for header, value in headers.items():
+                h[header] = value
+            return resp
+        return decorated_function
+    return decorator
 
 KEYDICT = {'KeyId': '782f60c6-f1a3-4670-84fe-5b3c749ceddc'}
 ALCHEMY = '5a8e248d968514b30bad5d7fc814937cc9663257'
