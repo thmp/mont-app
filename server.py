@@ -30,6 +30,15 @@ def account():
     account_info.append({'name': r.json()['account']['name'], 'balance': r.json()['account']['balance']})
   return json.dumps(account_info)
 
+@app.route('/transactions')
+def transactions():
+  r = requests.get('https://ucg-apimanager.axwaycloud.net:8065/transactions/v1?userId=aa.bruno.60', headers=KEYDICT)
+  transactions = r.json()['transactions']
+  transaction_info = []
+  for transaction in transactions:
+    transaction_info.append({'description': transaction['description'], 'amount': transaction['amount']})
+  return json.dumps(transaction_info[:10])
+
 @app.route('/securities')
 def securities():
   return json.dumps(my_securities)

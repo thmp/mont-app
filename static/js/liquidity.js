@@ -11,4 +11,11 @@ $(document).ready(function() {
 			}
 		}
 	});
+	$.getJSON('/transactions', function(data) {
+		$('#transactions').html('');
+		for (i = 0; i < data.length; i++) {
+			transaction = data[i];
+			$('#transactions').append('<li class="collection-item"><i class="material-icons tiny deep-orange-text">arrow_back</i> '+transaction['description']+' <span class="collection-amount">€ '+transaction['amount']+'</span></li>');
+		}
+	});
 });
