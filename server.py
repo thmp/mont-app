@@ -68,7 +68,7 @@ def search(query):
         'price': quote['resource']['fields']['price'],
         'symbol': quote['resource']['fields']['symbol']
         })
-    return json.dumps(quotes_list)
+    return json.dumps(quotes_list[:5])
   else:
     return json.dumps([])
 
