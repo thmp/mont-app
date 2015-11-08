@@ -72,6 +72,9 @@ def search(query):
     for stock in resp_json['ResultSet']['Result']:
       stocks.append(stock['symbol'])
 
+    if len(stocks) == 0:
+      return ''
+
     # get quotes for stocks
     symbols = ",".join(stocks)
     r = requests.get('http://finance.yahoo.com/webservice/v1/symbols/'+symbols+'/quote?format=json&view=detail')
