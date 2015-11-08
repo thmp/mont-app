@@ -41,6 +41,7 @@ def transactions():
   return json.dumps(transaction_info[:10])
 
 @app.route('/stock/<query>')
+@add_response_headers({'Access-Control-Allow-Origin': '*'})
 def search(query):
   r = requests.get('http://access.alchemyapi.com/calls/text/TextGetRankedNamedEntities?outputMode=json&apikey='+ALCHEMY+'&text='+query)
 
