@@ -39,6 +39,29 @@ def transactions():
     transaction_info.append({'description': transaction['description'], 'amount': transaction['amount']})
   return json.dumps(transaction_info[:10])
 
+@app.route('/stock/<query>')
+def search(query):
+  r = requests.get('https://s.yimg.com/aq/autoc?query='+query+'&region=US&lang=en-US&callback=callback')
+  resp = r.text[9:-2]
+  resp_json = json.loads(resp)
+
+  stocks = []
+  for stock in resp_json['ResultSet']['Result']:
+    stocks.append(stock['symbol'])
+
+  # get quotes for stocks
+  symbols = ",".join(stocks)
+  r = requests.get('http://finance.yahoo.com/webservice/v1/symbols/'+symbols+'/quote?format=json&view=detail')
+  quotes = r.json()['list']['resources']
+  quotes_list = []
+  for quote in quotes:
+    quotes_list.append({
+      'name': quote['resource']['fields']['name'],
+      'price': quote['resource']['fields']['price'],
+      'symbol': quote['resource']['fields']['symbol']
+      })
+  return json.dumps(quotes_list)
+
 @app.route('/securities')
 def securities():
   return json.dumps(my_securities)
